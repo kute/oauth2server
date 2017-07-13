@@ -21,6 +21,8 @@ public interface CommentService {
 
     public String genAccessToken() throws OAuthSystemException;
 
+    String genAuthCode(String responseType) throws OAuthSystemException;
+
     /**
      * 根据授权代码获取用户名
      * @param authCode
@@ -54,4 +56,6 @@ public interface CommentService {
      * @param username 用户名
      */
     public void addAccessToken(String accessToken, String username);
+
+    boolean checkAccessToken(String accessToken);
 }

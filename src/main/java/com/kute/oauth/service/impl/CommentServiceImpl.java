@@ -1,10 +1,12 @@
 package com.kute.oauth.service.impl;
 
+import com.google.common.base.Strings;
 import com.kute.oauth.cache.Cache;
 import com.kute.oauth.service.CommentService;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
+import org.apache.oltu.oauth2.common.message.types.ResponseType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,6 +32,16 @@ public class CommentServiceImpl implements CommentService {
         return authIssuerImpl.accessToken();
     }
 
+    @Override
+    public String genAuthCode(String responseType) throws OAuthSystemException {
+        String authCode = null;
+        if(!Strings.isNullOrEmpty(responseType) && responseType.equals(ResponseType.CODE.toString())) {
+            OAuthIssuerImpl oAuthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
+            authCode = oAuthIssuerImpl.authorizationCode();
+        }
+        return authCode;
+    }
+
     public String getUsernameByAuthCode(String authCode) {
         return String.valueOf(Cache.get(authCode));
     }
@@ -48,5 +60,10 @@ public class CommentServiceImpl implements CommentService {
 
     public void addAccessToken(String accessToken, String username) {
         Cache.set(accessToken, username);
+    }
+
+    @Override
+    public boolean checkAccessToken(String accessToken) {
+        return Cache.get(accessToken) != null;
     }
 }

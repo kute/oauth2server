@@ -5,8 +5,9 @@ package com.kute.oauth.exceptions;
  */
 public enum ErrorCode {
 
-    DEFAULT_ERROR(40000, "Bad request"),
-    WRONG_CLIENTID(40001, "wrong clientid");
+    DEFAULT_ERROR(40000, "Bad Request"),
+    WRONG_CLIENTID(40001, "Wrong Clientid"),
+    WRONG_CLIENT_SECRET(40002, "Wrong Client Secret");
 
     private int code;
     private String message;

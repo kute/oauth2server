@@ -15,10 +15,7 @@ public class Cache {
     private static Map<String, Object> redis = Maps.newHashMap();
 
     public static Object get(String key) {
-        if(!Strings.isNullOrEmpty(key) && redis.containsKey(key)) {
-            redis.get(key);
-        }
-        return null;
+        return redis.getOrDefault(key, null);
     }
 
     public static void set(String key, Object value) {

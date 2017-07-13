@@ -13,14 +13,48 @@
         <jackson.version>2.4.0</jackson.version>
         <mysql.version>5.1.34</mysql.version>
         <mybatis.version>3.2.7</mybatis.version>
-
     </properties>
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources/test</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources/</directory>
+                    </resource>
+                </resources>
+            </build>
+            <properties>
+                <common.jar.version>0.0.1-TEST</common.jar.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources/prod</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources/</directory>
+                    </resource>
+                </resources>
+            </build>
+            <properties>
+                <common.jar.version>0.0.1</common.jar.version>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -166,7 +200,42 @@
             <version>15.0</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>oatuh2server</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>utf-8</encoding>
+                    <fork>true</fork>
+                    <meminitial>512m</meminitial>
+                    <maxmem>1048m</maxmem>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <path>/</path>
+                    <port>8282</port>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!-- explicitly define maven-deploy-plugin after other to force exec order -->
+                <artifactId>maven-deploy-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>deploy</id>
+                        <phase>deploy</phase>
+                        <goals><goal>deploy</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
